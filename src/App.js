@@ -36,26 +36,62 @@ function App() {
     });
 }, []);
   return (
-    
+      
       <div className="App">
-     
-          <header className="App-header">
-            <p>The weather is : {weather}</p>
-            <p>Location: {city}</p>
-            <p>Time: {time} </p>
-            <p>Date: {date} </p>
+        <head>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous"></link>
+        </head>
+        <body class='bg-dark text-light'>
+          <div class='container'>
 
-            {forecasts.map((forecast) => (
+            {/* First row */}
+            <div class='row text-center '>
+              <div class='col-4 bg-danger rounded'>
+                <p class='font-weight-bold'>{city}</p>
+                <p class='font-weight-bold'><h1>{time}</h1> </p>
+                <p>{date} </p>
+              </div>
+              <div class='col'>
+
+              </div>
+            </div>
+
+
+
+            {/* {Second row} */}
+     
               
-              <div key={forecast.dt}>
-                  <p>{forecast.dt_txt}</p>
-                  <p>{forecast.main.temp} C</p>
-                  <p>{forecast.weather[0].main} </p>
-                  <IconWidget iconCode={forecast.weather[0].icon}/>
-              </div> 
-            ))}
-      </header>
-    </div>
+              <div class='row'>
+                <div class='col-4'>
+                  
+                </div>
+                <div class='col bg-warning rounded text-center'>
+                  <p class='font-weight-bold text-center'>Hourly forecast:</p>
+                  <div class='row '>
+            
+                  {forecasts.map((forecast) => (
+                    <div key={forecast.dt} class='col'>
+                        <p>{forecast.dt_txt}</p>
+                        <p>{forecast.main.temp}°C</p>
+                        <IconWidget iconCode={forecast.weather[0].icon}/>
+                    </div> 
+                  ))}
+                  </div>
+                 
+                </div>
+                
+              </div>
+              
+        
+
+          </div>
+        </body>
+     
+     
+          
+   
+        </div>
+        
     
   );
 }
