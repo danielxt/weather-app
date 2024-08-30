@@ -2,7 +2,7 @@ import './App.css';
 import {TempWidget, HumidityWidget, IconWidget} from './Widget.js'
 import { useState, useEffect } from 'react';
 const api_key = 'a6a45909c28cd58903e60dee2e8f4923'
-
+const cityId = '4984247'
 function App() {
   const [temp, setTemp] = useState(0);
   const [humidity, setHumidity] = useState(0);
@@ -11,30 +11,65 @@ function App() {
   const [time, setTime] = useState(0)
   const [date, setDate] = useState(0)
   const [forecasts, setForecasts] = useState([])
+  // forecast
+    useEffect(() => {
+      fetch(`http://api.openweathermap.org/data/2.5/forecast?id=${cityId}&appid=${api_key}&units=metric`)
+      .then((res) => {
+          return res.json();
+      })
+      .then((data) => {
 
+          setTemp(data.list[0].main.temp);
+          setHumidity(data.list[0].main.humidity)
+          setCity(data.city.name)
+
+
+          var now = new Date()
+          setDate(now.toDateString())
+          setTime(now.toLocaleTimeString())
+
+          setWeather(data.list[0].weather[0].main)
+
+          setForecasts(data.list.slice(0,5))
+        
+          // console.log(data.list)
+      });
+  }, []);
+
+  const [currentTemp, setCurrentTemp] = useState(0);
+  const [feelsLikeTemp, setFeelsLikeTemp] = useState(0);
+  const [sunrise, setSunrise] = useState(0);
+  const [sunset, setSunset] = useState(0);
+  const [currentWeather, setCurrentWeather] = useState('');
+
+  const [currentHumidity, setCurrentHumidity] = useState(0);
+
+  // current weather
   useEffect(() => {
-    fetch(`http://api.openweathermap.org/data/2.5/forecast?id=4984247&appid=${api_key}&units=metric`)
+    fetch(`http://api.openweathermap.org/data/2.5/weather?id=${cityId}&appid=${api_key}&units=metric`)
     .then((res) => {
         return res.json();
     })
     .then((data) => {
+      setCurrentTemp(data.main.temp)
+      setFeelsLikeTemp(data.main.feels_like)
+      var sunriseTime = new Date()
+      sunriseTime.setSeconds(data.sys.sunrise)
 
-        setTemp(data.list[0].main.temp);
-        setHumidity(data.list[0].main.humidity)
-        setCity(data.city.name)
+      setSunrise(sunriseTime.toISOString().substr(11, 8))
 
+      var sunsetTime = new Date()
+      sunsetTime.setSeconds(data.sys.sunset)
+      setSunset(sunsetTime.toISOString().substr(11, 8))
+      setCurrentWeather(data.weather[0].main)
 
-        var now = new Date()
-        setDate(now.toDateString())
-        setTime(now.toLocaleTimeString())
+      setCurrentHumidity(data.main.humidity)
 
-        setWeather(data.list[0].weather[0].main)
-
-        setForecasts(data.list.slice(0,5))
-      
-        // console.log(data.list)
+        
     });
-}, []);
+  }, []);
+
+
   return (
       
       <div className="App">
@@ -52,7 +87,13 @@ function App() {
                 <p>{date} </p>
               </div>
               <div class='col'>
-
+                <p>Current temp: {currentTemp} </p>
+                <p>Feels like: {feelsLikeTemp} </p>
+                <p>Sunrise: {sunrise} </p>
+                <p>Sunset: {sunset}</p>
+                <p>Current weather: {currentWeather}</p>
+                <p>Humidity: {currentHumidity}%</p>
+                <p></p>
               </div>
             </div>
 
