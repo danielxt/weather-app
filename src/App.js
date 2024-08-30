@@ -11,6 +11,8 @@ function App() {
   const [time, setTime] = useState(0)
   const [date, setDate] = useState(0)
   const [forecasts, setForecasts] = useState([])
+
+  const [fiveDayForecasts, setFiveDayForecasts] = useState([])
   // forecast
     useEffect(() => {
       fetch(`http://api.openweathermap.org/data/2.5/forecast?id=${cityId}&appid=${api_key}&units=metric`)
@@ -31,6 +33,8 @@ function App() {
           setWeather(data.list[0].weather[0].main)
 
           setForecasts(data.list.slice(0,5))
+
+          setFiveDayForecasts([data.list[4], data.list[12], data.list[20], data.list[28],data.list[36] ])
         
           // console.log(data.list)
       });
@@ -43,6 +47,8 @@ function App() {
   const [currentWeather, setCurrentWeather] = useState('');
 
   const [currentHumidity, setCurrentHumidity] = useState(0);
+  const [currentPressure, setCurrentPressure] = useState(0);
+  const [currentWindSpeed, setCurrentWindSpeed] = useState(0);
 
   // current weather
   useEffect(() => {
@@ -64,6 +70,8 @@ function App() {
       setCurrentWeather(data.weather[0].main)
 
       setCurrentHumidity(data.main.humidity)
+      setCurrentPressure(data.main.pressure)
+      setCurrentWindSpeed(data.wind.speed)
 
         
     });
@@ -93,7 +101,9 @@ function App() {
                 <p>Sunset: {sunset}</p>
                 <p>Current weather: {currentWeather}</p>
                 <p>Humidity: {currentHumidity}%</p>
-                <p></p>
+
+                <p>Pressure: {currentPressure} hPa</p>
+                <p>Wind: {currentWindSpeed} km/h</p>
               </div>
             </div>
 
@@ -104,6 +114,13 @@ function App() {
               
               <div class='row'>
                 <div class='col-4'>
+                {fiveDayForecasts.map((forecast) => (
+                    <div key={forecast.dt} class='col'>
+                        <p>{forecast.dt_txt}</p>
+                        <p>{forecast.main.temp}°C</p>
+                        <IconWidget iconCode={forecast.weather[0].icon}/>
+                    </div> 
+                  ))}
                   
                 </div>
                 <div class='col bg-warning rounded text-center'>
