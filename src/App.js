@@ -5,7 +5,6 @@ import "react-widgets/styles.css";
 import cityData from './city.list.json'
 import DropdownList from "react-widgets/DropdownList";
 const api_key = 'a6a45909c28cd58903e60dee2e8f4923'
-const cityId = '4984247'
 
 
 
@@ -14,8 +13,7 @@ function App() {
   const [humidity, setHumidity] = useState(0);
   const [city, setCity] = useState('');
   const [weather, setWeather] = useState('')
-  const [time, setTime] = useState(0)
-  const [date, setDate] = useState(0)
+  
   const [forecasts, setForecasts] = useState([])
 
   
@@ -23,7 +21,7 @@ function App() {
   const [fiveDayForecasts, setFiveDayForecasts] = useState([])
   // forecast
 
-  const [cityId, setCityId] = useState('4984247')
+  const [cityId, setCityId] = useState('1850147')
   const [cityName, setCityName] = useState('Tokyo') // THE INPUT TRIGGER
  
 
@@ -61,6 +59,8 @@ function App() {
   const [currentHumidity, setCurrentHumidity] = useState(0);
   const [currentPressure, setCurrentPressure] = useState(0);
   const [currentWindSpeed, setCurrentWindSpeed] = useState(0);
+  const [time, setCurrentTime] = useState(0)
+  const [date, setCurrentDate] = useState(0)
 
   // current weather
   useEffect(() => {
@@ -81,6 +81,15 @@ function App() {
       setSunset(sunsetTime.toISOString().substr(11, 8))
       setCurrentWeather(data.weather[0].main)
 
+      var currentTime = new Date()
+      currentTime.setSeconds(data.dt)
+      setCurrentTime(currentTime.toISOString().substr(11, 8))
+
+  
+      let date = new Date(data.dt * 1000)
+      setCurrentDate(date.toLocaleDateString())
+
+
       setCurrentHumidity(data.main.humidity)
       setCurrentPressure(data.main.pressure)
       setCurrentWindSpeed(data.wind.speed)
@@ -96,7 +105,8 @@ function App() {
     "Delhi",
     "Shanghai",
     "Sao Paulo",
-    "Mexico City"
+    "Mexico City",
+    "Ann Arbor"
   ]
   function convertCityNameToCityId(cityName) {
     for (let i = 0; i < cityData.length; i++) {
