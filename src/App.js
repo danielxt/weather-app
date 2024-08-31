@@ -1,8 +1,14 @@
 import './App.css';
 import {TempWidget, HumidityWidget, IconWidget} from './Widget.js'
 import { useState, useEffect } from 'react';
+import "react-widgets/styles.css";
+import cityData from './city.list.json'
+import DropdownList from "react-widgets/DropdownList";
 const api_key = 'a6a45909c28cd58903e60dee2e8f4923'
 const cityId = '4984247'
+
+
+
 function App() {
   const [temp, setTemp] = useState(0);
   const [humidity, setHumidity] = useState(0);
@@ -12,8 +18,15 @@ function App() {
   const [date, setDate] = useState(0)
   const [forecasts, setForecasts] = useState([])
 
+  
+
   const [fiveDayForecasts, setFiveDayForecasts] = useState([])
   // forecast
+
+  const [cityId, setCityId] = useState('4984247')
+  const [cityName, setCityName] = useState('Tokyo') // THE INPUT TRIGGER
+ 
+
     useEffect(() => {
       fetch(`http://api.openweathermap.org/data/2.5/forecast?id=${cityId}&appid=${api_key}&units=metric`)
       .then((res) => {
@@ -25,20 +38,19 @@ function App() {
           setHumidity(data.list[0].main.humidity)
           setCity(data.city.name)
 
-
-          var now = new Date()
-          setDate(now.toDateString())
-          setTime(now.toLocaleTimeString())
+          /// this is wrong - doesnt reflect chosen timezon
+          // var now = new Date()
+          // setDate(now.toDateString())
+          // setTime(now.toLocaleTimeString())
 
           setWeather(data.list[0].weather[0].main)
-
           setForecasts(data.list.slice(0,5))
 
           setFiveDayForecasts([data.list[4], data.list[12], data.list[20], data.list[28],data.list[36] ])
         
           // console.log(data.list)
       });
-  }, []);
+  }, [cityId]);
 
   const [currentTemp, setCurrentTemp] = useState(0);
   const [feelsLikeTemp, setFeelsLikeTemp] = useState(0);
@@ -75,9 +87,27 @@ function App() {
 
         
     });
-  }, []);
+  }, [cityId]);
 
+ 
+  // fix later
+  const cities = [
+    "Tokyo",
+    "Delhi",
+    "Shanghai",
+    "Sao Paulo",
+    "Mexico City"
+  ]
+  function convertCityNameToCityId(cityName) {
+    for (let i = 0; i < cityData.length; i++) {
+      if (cityData[i].name == cityName) {
+        return cityData[i].id
+      }
+    }
+    return 1850144
+  }
 
+  
   return (
       
       <div className="App">
@@ -86,6 +116,34 @@ function App() {
         </head>
         <body class='bg-dark text-light'>
           <div class='container'>
+            <div class='row'>
+              <div class='col'>
+
+              </div>
+              <div class='col'>
+             
+             
+                <DropdownList
+                placeholder="Enter city"
+    data={cities} name='cityName' defaultValue={"Tokyo"}
+    onChange={(nextCityName) => {
+        var cityId = convertCityNameToCityId(nextCityName)
+        setCityName(nextCityName)
+        setCityId(cityId)
+      }
+  
+    }
+  />
+  <p>{cityName}</p>
+           
+  
+                
+              </div>
+              <div class='col'>
+                
+              </div>
+              
+            </div>
 
             {/* First row */}
             <div class='row text-center '>
