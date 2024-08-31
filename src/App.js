@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import "react-widgets/styles.css";
 import cityData from './city.list.json'
 import DropdownList from "react-widgets/DropdownList";
-import convertUnixToHoursAndMinutes from './utils.js';
+import {convertUnixToHoursAndMinutes, convertUnixToWeekdayDayMonth} from './utils.js';
 const api_key = 'a6a45909c28cd58903e60dee2e8f4923'
 
 
@@ -16,6 +16,8 @@ function App() {
   const [weather, setWeather] = useState('')
   
   const [forecasts, setForecasts] = useState([])
+
+  const [timezone, setTimeZone] = useState(0);
 
   
 
@@ -37,17 +39,11 @@ function App() {
           setHumidity(data.list[0].main.humidity)
           setCity(data.city.name)
 
-          /// this is wrong - doesnt reflect chosen timezon
-          // var now = new Date()
-          // setDate(now.toDateString())
-          // setTime(now.toLocaleTimeString())
-
           setWeather(data.list[0].weather[0].main)
           setForecasts(data.list.slice(0,5))
+          setTimeZone(data.city.timezone)
 
           setFiveDayForecasts([data.list[4], data.list[12], data.list[20], data.list[28],data.list[36] ])
-        
-          // console.log(data.list)
       });
   }, [cityId]);
 
@@ -75,11 +71,9 @@ function App() {
       var sunriseTime = new Date()
       sunriseTime.setSeconds(data.sys.sunrise)
 
-      setSunrise(sunriseTime.toISOString().substr(11, 8))
+      setSunrise(convertUnixToHoursAndMinutes(data.sys.sunrise, data.timezone))
 
-      var sunsetTime = new Date()
-      sunsetTime.setSeconds(data.sys.sunset)
-      setSunset(sunsetTime.toISOString().substr(11, 8))
+      setSunset(convertUnixToHoursAndMinutes(data.sys.sunset, data.timezone))
       setCurrentWeather(data.weather[0].main)
 
       
@@ -115,7 +109,7 @@ function App() {
         return cityData[i].id
       }
     }
-    return 1850144
+    return 1850147  // split second default??
   }
 
   
@@ -184,7 +178,8 @@ function App() {
                 <div class='col-4 border border-white rounded text-center'>
                 {fiveDayForecasts.map((forecast) => (
                     <div key={forecast.dt} class='col'>
-                        <p>{forecast.dt_txt}</p>
+                      
+                        <p>{convertUnixToWeekdayDayMonth(forecast.dt, timezone)}</p>
                         <p>{forecast.main.temp}°C</p>
                         <IconWidget iconCode={forecast.weather[0].icon}/>
                     </div> 
