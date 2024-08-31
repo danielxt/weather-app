@@ -167,24 +167,28 @@ function App() {
               
               <div class='row'>
                 <div class='col-4 border border-white rounded text-center'>
-                  <h3><b>5 days forecast</b></h3>
+                  <h3><b>5 day forecast</b></h3>
                 {fiveDayForecasts.map((forecast) => (
-                    <div key={forecast.dt} class='col'>
-                      
-                        <p>{convertUnixToWeekdayDayMonth(forecast.dt, timezone)}</p>
-                        <p>{forecast.main.temp}°C</p>
-                        <IconWidget iconCode={forecast.weather[0].icon}/>
+                    <div key={forecast.dt}>
+                        <div class='row text-center'>
+                          <div class='d-flex align-items-center justify-content-center col'><IconWidget iconCode={forecast.weather[0].icon}/></div>
+                          <div class='d-flex align-items-center justify-content-center col'>{forecast.main.temp}°C</div>
+                          <div class='d-flex align-items-center justify-content-center col'>{convertUnixToWeekdayDayMonth(forecast.dt, timezone)}</div>
+                          
+                          
+                        </div>
+                        
                     </div> 
                   ))}
                   
                 </div>
                 <div class='col border border-white rounded text-center'>
-                  <p class='font-weight-bold text-center'>Hourly forecast:</p>
+                  <h3><b> Hourly forecast</b></h3>
                   <div class='row '>
             
                   {forecasts.map((forecast) => (
                     <div key={forecast.dt} class='col'>
-                        <p>{convertUnixToWeekdayDayMonth(forecast.dt, timezone)}</p>
+                        <p>{convertUnixToHoursAndMinutes(forecast.dt, timezone)}</p>
                         <p>{forecast.main.temp}°C</p>
                         <IconWidget iconCode={forecast.weather[0].icon}/>
                     </div> 
