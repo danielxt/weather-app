@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import "react-widgets/styles.css";
 import cityData from './city.list.json'
 import DropdownList from "react-widgets/DropdownList";
-import {convertUnixToHoursAndMinutes, convertUnixToWeekdayDayMonth} from './utils.js';
+import {convertUnixToHoursAndMinutes, convertUnixToWeekdayDayMonth, convertCityNameToCityId} from './utils.js';
 const api_key = 'a6a45909c28cd58903e60dee2e8f4923'
 
 
@@ -99,18 +99,9 @@ function App() {
     "Tokyo",
     "Delhi",
     "Shanghai",
-    "Sao Paulo",
     "Mexico City",
     "Ann Arbor"
   ]
-  function convertCityNameToCityId(cityName) {
-    for (let i = 0; i < cityData.length; i++) {
-      if (cityData[i].name == cityName) {
-        return cityData[i].id
-      }
-    }
-    return 1850147  // split second default??
-  }
 
   
   return (
@@ -176,6 +167,7 @@ function App() {
               
               <div class='row'>
                 <div class='col-4 border border-white rounded text-center'>
+                  <h3><b>5 days forecast</b></h3>
                 {fiveDayForecasts.map((forecast) => (
                     <div key={forecast.dt} class='col'>
                       
@@ -192,7 +184,7 @@ function App() {
             
                   {forecasts.map((forecast) => (
                     <div key={forecast.dt} class='col'>
-                        <p>{forecast.dt_txt}</p>
+                        <p>{convertUnixToWeekdayDayMonth(forecast.dt, timezone)}</p>
                         <p>{forecast.main.temp}°C</p>
                         <IconWidget iconCode={forecast.weather[0].icon}/>
                     </div> 

@@ -1,3 +1,4 @@
+import cityData from './city.list.json'
 function getUtcString(utcTime, timezone) {
     var unixTime = utcTime + timezone
     const dateObj = new Date(unixTime * 1000)
@@ -19,3 +20,12 @@ export function convertUnixToWeekdayDayMonth(utcTime, timezone) {
     const day = utcString.split(' ')[1]
     return weekday + " " + month + " " + day
 }
+
+export function convertCityNameToCityId(cityName) {
+    for (let i = 0; i < cityData.length; i++) {
+      if (cityData[i].name == cityName) {
+        return cityData[i].id
+      }
+    }
+    return 1850147  // split second default??
+  }
