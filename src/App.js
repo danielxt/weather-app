@@ -59,7 +59,7 @@ function App() {
   const [currentHumidity, setCurrentHumidity] = useState(0);
   const [currentPressure, setCurrentPressure] = useState(0);
   const [currentWindSpeed, setCurrentWindSpeed] = useState(0);
-  const [time, setCurrentTime] = useState(0)
+  const [time, setCurrentTime] = useState('')
   const [date, setCurrentDate] = useState(0)
 
   // current weather
@@ -81,12 +81,14 @@ function App() {
       setSunset(sunsetTime.toISOString().substr(11, 8))
       setCurrentWeather(data.weather[0].main)
 
-      var currentTime = new Date()
-      currentTime.setSeconds(data.dt)
-      setCurrentTime(currentTime.toISOString().substr(11, 8))
+      var unixTime = data.dt + data.timezone
+      const dateObj = new Date(unixTime * 1000)
+      const utcString = dateObj.toUTCString();
+ 
+      setCurrentTime(utcString)
 
   
-      let date = new Date(data.dt * 1000)
+      let date = new Date(data.dt  * 1000)
       setCurrentDate(date.toLocaleDateString())
 
 
@@ -144,7 +146,6 @@ function App() {
   
     }
   />
-  <p>{cityName}</p>
            
   
                 
@@ -181,7 +182,7 @@ function App() {
      
               
               <div class='row'>
-                <div class='col-4'>
+                <div class='col-4 border border-white rounded text-center'>
                 {fiveDayForecasts.map((forecast) => (
                     <div key={forecast.dt} class='col'>
                         <p>{forecast.dt_txt}</p>
