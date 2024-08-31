@@ -156,13 +156,13 @@ function App() {
             </div>
 
             {/* First row */}
-            <div class='row text-center '>
-              <div class='col-4 bg-danger rounded'>
+            <div class='row text-center  '>
+              <div class='col-4 border border-white rounded'>
                 <p class='font-weight-bold'>{city}</p>
                 <p class='font-weight-bold'><h1>{time}</h1> </p>
                 <p>{date} </p>
               </div>
-              <div class='col'>
+              <div class='col border border-white rounded'>
                 <p>Current temp: {currentTemp} </p>
                 <p>Feels like: {feelsLikeTemp} </p>
                 <p>Sunrise: {sunrise} </p>
@@ -191,7 +191,7 @@ function App() {
                   ))}
                   
                 </div>
-                <div class='col bg-warning rounded text-center'>
+                <div class='col border border-white rounded text-center'>
                   <p class='font-weight-bold text-center'>Hourly forecast:</p>
                   <div class='row '>
             
