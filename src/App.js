@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import "react-widgets/styles.css";
 import cityData from './city.list.json'
 import DropdownList from "react-widgets/DropdownList";
+import convertUnixToHoursAndMinutes from './utils.js';
 const api_key = 'a6a45909c28cd58903e60dee2e8f4923'
 
 
@@ -81,11 +82,9 @@ function App() {
       setSunset(sunsetTime.toISOString().substr(11, 8))
       setCurrentWeather(data.weather[0].main)
 
-      var unixTime = data.dt + data.timezone
-      const dateObj = new Date(unixTime * 1000)
-      const utcString = dateObj.toUTCString();
+      
  
-      setCurrentTime(utcString)
+      setCurrentTime(convertUnixToHoursAndMinutes(data.dt, data.timezone))
 
   
       let date = new Date(data.dt  * 1000)
