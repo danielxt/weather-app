@@ -68,9 +68,6 @@ function App() {
     .then((data) => {
       setCurrentTemp(data.main.temp)
       setFeelsLikeTemp(data.main.feels_like)
-      var sunriseTime = new Date()
-      sunriseTime.setSeconds(data.sys.sunrise)
-
       setSunrise(convertUnixToHoursAndMinutes(data.sys.sunrise, data.timezone))
 
       setSunset(convertUnixToHoursAndMinutes(data.sys.sunset, data.timezone))
@@ -80,9 +77,7 @@ function App() {
  
       setCurrentTime(convertUnixToHoursAndMinutes(data.dt, data.timezone))
 
-  
-      let date = new Date(data.dt  * 1000)
-      setCurrentDate(date.toLocaleDateString())
+      setCurrentDate(convertUnixToWeekdayDayMonth(data.dt, data.timezone))
 
 
       setCurrentHumidity(data.main.humidity)
@@ -100,7 +95,8 @@ function App() {
     "Delhi",
     "Shanghai",
     "Mexico City",
-    "Ann Arbor"
+    "Ann Arbor",
+    "Kuala Lumpur"
   ]
 
   
@@ -141,22 +137,39 @@ function App() {
             </div>
 
             {/* First row */}
-            <div class='row text-center  '>
+            <div class='row text-center'>
               <div class='col-4 border border-white rounded'>
                 <p class='font-weight-bold'>{city}</p>
                 <p class='font-weight-bold'><h1>{time}</h1> </p>
                 <p>{date} </p>
               </div>
               <div class='col border border-white rounded'>
-                <p>Current temp: {currentTemp} </p>
-                <p>Feels like: {feelsLikeTemp} </p>
-                <p>Sunrise: {sunrise} </p>
-                <p>Sunset: {sunset}</p>
-                <p>Current weather: {currentWeather}</p>
-                <p>Humidity: {currentHumidity}%</p>
+                <div class='row'>
+                    <div class='col'>
+                     
+                        <p style={{fontSize:40}}><b>{currentTemp}°C</b> </p>
+                        <p>Feels like: <b>{feelsLikeTemp}°C</b>  </p>
+                
+                        <p><svg class="feather feather-sunrise" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M17 18a5 5 0 0 0-10 0"/><line x1="12" x2="12" y1="2" y2="9"/><line x1="4.22" x2="5.64" y1="10.22" y2="11.64"/><line x1="1" x2="3" y1="18" y2="18"/><line x1="21" x2="23" y1="18" y2="18"/><line x1="18.36" x2="19.78" y1="11.64" y2="10.22"/><line x1="23" x2="1" y1="22" y2="22"/><polyline points="8 6 12 2 16 6"/></svg>  Sunrise: {sunrise} </p>
+                        <p><svg class="feather feather-sunset" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M17 18a5 5 0 0 0-10 0"/><line x1="12" x2="12" y1="9" y2="2"/><line x1="4.22" x2="5.64" y1="10.22" y2="11.64"/><line x1="1" x2="3" y1="18" y2="18"/><line x1="21" x2="23" y1="18" y2="18"/><line x1="18.36" x2="19.78" y1="11.64" y2="10.22"/><line x1="23" x2="1" y1="22" y2="22"/><polyline points="16 5 12 9 8 5"/></svg>  Sunset: {sunset} </p>
+                   
+                     
+                    </div>
+                    <div class='col'>
+                      <p>Current weather: {currentWeather}</p>
+                    </div>
+                    <div class='col'>
+                      <p>Humidity: {currentHumidity}%</p>
 
-                <p>Pressure: {currentPressure} hPa</p>
-                <p>Wind: {currentWindSpeed} km/h</p>
+                      <p>Pressure: {currentPressure} hPa</p>
+                      <p>Wind: {currentWindSpeed} km/h</p>
+                    </div>
+
+                </div>
+                
+                
+                
+                
               </div>
             </div>
 
@@ -164,14 +177,13 @@ function App() {
 
             {/* {Second row} */}
      
-              
               <div class='row'>
                 <div class='col-4 border border-white rounded text-center'>
                   <h3><b>5 day forecast</b></h3>
                 {fiveDayForecasts.map((forecast) => (
                     <div key={forecast.dt}>
                         <div class='row text-center'>
-                          <div class='d-flex align-items-center justify-content-center col'><IconWidget iconCode={forecast.weather[0].icon}/></div>
+                          <div class='d-flex align-items-center justify-content-center col'><IconWidget iconCode={forecast.weather[0].icon} size={50}/></div>
                           <div class='d-flex align-items-center justify-content-center col'>{forecast.main.temp}°C</div>
                           <div class='d-flex align-items-center justify-content-center col'>{convertUnixToWeekdayDayMonth(forecast.dt, timezone)}</div>
                           

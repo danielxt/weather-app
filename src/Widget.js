@@ -17,12 +17,11 @@ export function HumidityWidget({humidity}) {
 }
 
 
-export function IconWidget({iconCode}) {
+export function IconWidget({iconCode, size}) {
     let iconUrl = `https://openweathermap.org/img/wn/${iconCode}@2x.png`
     return (
-        <img src={iconUrl}></img>
+        <img src={iconUrl} style={{height: size}}></img>
     )
-
 }
 
 // const backStyle = {
