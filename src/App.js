@@ -2,7 +2,6 @@ import './App.css';
 import {TempWidget, HumidityWidget, IconWidget} from './Widget.js'
 import { useState, useEffect } from 'react';
 import "react-widgets/styles.css";
-import cityData from './city.list.json'
 import DropdownList from "react-widgets/DropdownList";
 import {convertUnixToHoursAndMinutes, convertUnixToWeekdayDayMonth, convertCityNameToCityId} from './utils.js';
 const api_key = 'a6a45909c28cd58903e60dee2e8f4923'
@@ -52,10 +51,12 @@ function App() {
   const [sunrise, setSunrise] = useState(0);
   const [sunset, setSunset] = useState(0);
   const [currentWeather, setCurrentWeather] = useState('');
+  const [currentWeatherIcon, setCurrentWeatherIcon] = useState('')
 
   const [currentHumidity, setCurrentHumidity] = useState(0);
   const [currentPressure, setCurrentPressure] = useState(0);
   const [currentWindSpeed, setCurrentWindSpeed] = useState(0);
+  const [currentVisibility, setCurrentVisibility] = useState(0);
   const [time, setCurrentTime] = useState('')
   const [date, setCurrentDate] = useState(0)
 
@@ -72,7 +73,8 @@ function App() {
 
       setSunset(convertUnixToHoursAndMinutes(data.sys.sunset, data.timezone))
       setCurrentWeather(data.weather[0].main)
-
+      setCurrentWeatherIcon(data.weather[0].icon)
+      
       
  
       setCurrentTime(convertUnixToHoursAndMinutes(data.dt, data.timezone))
@@ -83,6 +85,7 @@ function App() {
       setCurrentHumidity(data.main.humidity)
       setCurrentPressure(data.main.pressure)
       setCurrentWindSpeed(data.wind.speed)
+      setCurrentVisibility(data.visibility)
 
         
     });
@@ -140,7 +143,7 @@ function App() {
             <div class='row text-center'>
               <div class='col-4 border border-white rounded'>
                 <p class='font-weight-bold'>{city}</p>
-                <p class='font-weight-bold'><h1>{time}</h1> </p>
+                <p class='font-weight-bold' style={{fontSize:60}}><b>{time}</b></p>
                 <p>{date} </p>
               </div>
               <div class='col border border-white rounded'>
@@ -149,20 +152,43 @@ function App() {
                      
                         <p style={{fontSize:40}}><b>{currentTemp}°C</b> </p>
                         <p>Feels like: <b>{feelsLikeTemp}°C</b>  </p>
-                
+                        <br/>
                         <p><svg class="feather feather-sunrise" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M17 18a5 5 0 0 0-10 0"/><line x1="12" x2="12" y1="2" y2="9"/><line x1="4.22" x2="5.64" y1="10.22" y2="11.64"/><line x1="1" x2="3" y1="18" y2="18"/><line x1="21" x2="23" y1="18" y2="18"/><line x1="18.36" x2="19.78" y1="11.64" y2="10.22"/><line x1="23" x2="1" y1="22" y2="22"/><polyline points="8 6 12 2 16 6"/></svg>  Sunrise: {sunrise} </p>
                         <p><svg class="feather feather-sunset" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M17 18a5 5 0 0 0-10 0"/><line x1="12" x2="12" y1="9" y2="2"/><line x1="4.22" x2="5.64" y1="10.22" y2="11.64"/><line x1="1" x2="3" y1="18" y2="18"/><line x1="21" x2="23" y1="18" y2="18"/><line x1="18.36" x2="19.78" y1="11.64" y2="10.22"/><line x1="23" x2="1" y1="22" y2="22"/><polyline points="16 5 12 9 8 5"/></svg>  Sunset: {sunset} </p>
                    
                      
                     </div>
                     <div class='col'>
-                      <p>Current weather: {currentWeather}</p>
+                      <p><IconWidget iconCode={currentWeatherIcon} size={130}/></p>
+                      <p style={{fontSize:40}}><b>{currentWeather}</b></p>
                     </div>
                     <div class='col'>
-                      <p>Humidity: {currentHumidity}%</p>
-
-                      <p>Pressure: {currentPressure} hPa</p>
-                      <p>Wind: {currentWindSpeed} km/h</p>
+                      <div class='row'>
+                        <div class='col'>
+                         
+                        <p style={{fontSize:30}}>💦</p>
+                        <p>{currentHumidity}%</p>
+                        <p>Humidity</p>
+                        </div>
+                        <div class='col'>
+                        <p style={{fontSize:30}}> 🌡</p>
+                        <p>{currentPressure} hPa</p>
+                        <p>Pressure</p>
+                        </div>
+                      </div>
+                      <div class='row'>
+                        <div class='col'>
+                        <p style={{fontSize:30}}>💨</p>
+                        <p>{currentWindSpeed} km/h</p>
+                        <p>Wind speed</p>
+                        </div>
+                        <div class='col'>
+                        <p style={{fontSize:30}}>👁</p>
+                        <p>{currentVisibility} m</p>
+                        <p>Visibility</p>
+                          
+                        </div>
+                      </div>
                     </div>
 
                 </div>
