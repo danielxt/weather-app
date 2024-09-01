@@ -7,7 +7,7 @@ import Switch from '@mui/material/Switch';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
-import FormLabel from '@mui/material/FormLabel';
+import citiesList from './citiesList.txt'
 
 
 
@@ -70,6 +70,8 @@ function App() {
   const [time, setCurrentTime] = useState('')
   const [date, setCurrentDate] = useState(0)
 
+  
+
   // current weather
   useEffect(() => {
     fetch(`http://api.openweathermap.org/data/2.5/weather?id=${cityId}&appid=${api_key}&units=metric`)
@@ -103,14 +105,27 @@ function App() {
 
  
   // fix later
-  const cities = [
+  const [cities, setCities] = useState([
     "Tokyo",
     "Delhi",
     "Shanghai",
     "Mexico City",
     "Ann Arbor",
     "Kuala Lumpur"
-  ]
+  ])
+  fetch(citiesList)
+    .then(r => r.text())
+    .then(text => {
+      setCities(text.split("\n"))
+    });
+  // const cities = [
+  //   "Tokyo",
+  //   "Delhi",
+  //   "Shanghai",
+  //   "Mexico City",
+  //   "Ann Arbor",
+  //   "Kuala Lumpur"
+  // ]
   
   // dark/light mode checking
   useEffect(() => {
@@ -187,7 +202,7 @@ function App() {
          
             
             <div class='row my-2 text-center'>
-              <div class='col-4 mx-2 border rounded align-items-center'>
+              <div class='col-4 mx-2 border  align-items-center'>
               <br/>
            
               <div class='font-weight-bold'><h2>{city}</h2></div>
