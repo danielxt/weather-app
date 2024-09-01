@@ -25,9 +25,10 @@ function App() {
 
   const [timezone, setTimeZone] = useState(0);
 
-  const [darkModeOn, setDarkMode] = useState(true);
+  const [darkModeOn, setDarkMode] = useState(false);
   
   const [modeClasses, setModeClasses] = useState('text-light bg-dark')
+  const [borderClasses, setBorderClasses] = useState('border border-white border-thickness')
 
   const [fiveDayForecasts, setFiveDayForecasts] = useState([])
   // forecast
@@ -116,9 +117,11 @@ function App() {
    
     if (darkModeOn) {
       setModeClasses('text-light bg-dark')
+      setBorderClasses('border border-white border-thickness')
     }
     else {
       setModeClasses('text-dark bg-light')
+      setBorderClasses('border border-dark border-thickness')
     }
   }, [darkModeOn]);
 
@@ -141,7 +144,7 @@ function App() {
  
         <FormControlLabel
           value="bottom"
-          control={<Switch color="primary"  defaultChecked/>}
+          control={<Switch color="primary"/>}
           label="Dark mode"
           labelPlacement="bottom"
          
@@ -184,15 +187,18 @@ function App() {
          
             
             <div class='row my-2 text-center'>
-              <div class='col-4 mx-2 rounded align-items-center bg-secondary'>
+              <div class='col-4 mx-2 border rounded align-items-center'>
               <br/>
-                <div class='font-weight-bold'><h2>{city}</h2></div>
+           
+              <div class='font-weight-bold'><h2>{city}</h2></div>
                 <div class='font-weight-bold' style={{fontSize:60}}><b>{time}</b></div>
                 <div>{date} </div>
+             
+                
               
                
               </div>
-              <div class='col mx-2 rounded bg-secondary'>
+              <div class='col mx-2 border rounded'>
                 <div class='row'>
                     <div class='col'>
                      
@@ -250,7 +256,7 @@ function App() {
             {/* {Second row} */}
      
               <div class='row my-2'>
-                <div class='col-4  mx-2  bg-secondary rounded text-center'>
+                <div class='col-4  border mx-2  rounded text-center'>
                   <h3><b>5 day forecast</b></h3>
                 {fiveDayForecasts.map((forecast) => (
                     <div key={forecast.dt}>
@@ -266,7 +272,7 @@ function App() {
                   ))}
                   
                 </div>
-                <div class='col mx-2 bg-secondary rounded text-center'>
+                <div class='col border mx-2 rounded text-center'>
                   <h3><b> Hourly forecast</b></h3>
                   <div class='row '>
             
