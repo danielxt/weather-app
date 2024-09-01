@@ -3,9 +3,16 @@ import {TempWidget, HumidityWidget, IconWidget} from './Widget.js'
 import { useState, useEffect } from 'react';
 import "react-widgets/styles.css";
 import DropdownList from "react-widgets/DropdownList";
+import Switch from '@mui/material/Switch';
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
+
+
+
 import {convertUnixToHoursAndMinutes, convertUnixToWeekdayDayMonth, convertCityNameToCityId} from './utils.js';
 const api_key = 'a6a45909c28cd58903e60dee2e8f4923'
-
 
 
 function App() {
@@ -18,7 +25,9 @@ function App() {
 
   const [timezone, setTimeZone] = useState(0);
 
+  const [darkModeOn, setDarkMode] = useState(true);
   
+  const [modeClasses, setModeClasses] = useState('text-light bg-dark')
 
   const [fiveDayForecasts, setFiveDayForecasts] = useState([])
   // forecast
@@ -101,6 +110,18 @@ function App() {
     "Ann Arbor",
     "Kuala Lumpur"
   ]
+  
+  // dark/light mode checking
+  useEffect(() => {
+   
+    if (darkModeOn) {
+      setModeClasses('text-light bg-dark')
+    }
+    else {
+      setModeClasses('text-dark bg-light')
+    }
+  }, [darkModeOn]);
+
 
   
   return (
@@ -109,19 +130,39 @@ function App() {
         <head>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous"></link>
         </head>
-        <body class='bg-dark text-light'>
+        <body class={modeClasses}>
           
           <div class='container'>
             <div class='row py-3'>
               <div class='col'>
-   
+                <FormControl component="fieldset">
+
+      <FormGroup aria-label="position" row>
+ 
+        <FormControlLabel
+          value="bottom"
+          control={<Switch color="primary"  defaultChecked/>}
+          label="Dark mode"
+          labelPlacement="bottom"
+         
+          onChange={(nextMode) => {
+            setDarkMode(!darkModeOn)
+          }}
+        />
+
+      </FormGroup>
+    </FormControl>
+
+
+
+
               </div>
               <div class='col'>
              
              
                 <DropdownList
                 placeholder="Enter city"
-    data={cities} name='cityName' defaultValue={cityName}
+    data={cities} name='cityName'
     onChange={(nextCityName) => {
         var cityId = convertCityNameToCityId(nextCityName)
         setCityName(nextCityName)
