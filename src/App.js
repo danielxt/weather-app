@@ -23,8 +23,8 @@ function App() {
   const [fiveDayForecasts, setFiveDayForecasts] = useState([])
   // forecast
 
-  const [cityId, setCityId] = useState('1850147')
-  const [cityName, setCityName] = useState('Tokyo') // THE INPUT TRIGGER
+  const [cityId, setCityId] = useState('4984247')
+  const [cityName, setCityName] = useState('Ann Arbor') // THE INPUT TRIGGER
  
 
     useEffect(() => {
@@ -110,17 +110,18 @@ function App() {
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous"></link>
         </head>
         <body class='bg-dark text-light'>
+          
           <div class='container'>
             <div class='row'>
               <div class='col'>
-
+   
               </div>
               <div class='col'>
              
              
                 <DropdownList
                 placeholder="Enter city"
-    data={cities} name='cityName' defaultValue={"Tokyo"}
+    data={cities} name='cityName' defaultValue={cityName}
     onChange={(nextCityName) => {
         var cityId = convertCityNameToCityId(nextCityName)
         setCityName(nextCityName)
@@ -134,19 +135,23 @@ function App() {
                 
               </div>
               <div class='col'>
-                
+
               </div>
               
             </div>
 
-            {/* First row */}
-            <div class='row text-center'>
-              <div class='col-4 border border-white rounded'>
-                <p class='font-weight-bold'>{city}</p>
-                <p class='font-weight-bold' style={{fontSize:60}}><b>{time}</b></p>
-                <p>{date} </p>
+         
+            
+            <div class='row my-2 text-center'>
+              <div class='col-4 mx-2 rounded align-items-center bg-secondary'>
+              <br/>
+                <div class='font-weight-bold'><h2>{city}</h2></div>
+                <div class='font-weight-bold' style={{fontSize:60}}><b>{time}</b></div>
+                <div>{date} </div>
+              
+               
               </div>
-              <div class='col border border-white rounded'>
+              <div class='col mx-2 rounded bg-secondary'>
                 <div class='row'>
                     <div class='col'>
                      
@@ -203,8 +208,8 @@ function App() {
 
             {/* {Second row} */}
      
-              <div class='row'>
-                <div class='col-4 border border-white rounded text-center'>
+              <div class='row my-2'>
+                <div class='col-4  mx-2  bg-secondary rounded text-center'>
                   <h3><b>5 day forecast</b></h3>
                 {fiveDayForecasts.map((forecast) => (
                     <div key={forecast.dt}>
@@ -220,7 +225,7 @@ function App() {
                   ))}
                   
                 </div>
-                <div class='col border border-white rounded text-center'>
+                <div class='col mx-2 bg-secondary rounded text-center'>
                   <h3><b> Hourly forecast</b></h3>
                   <div class='row '>
             
