@@ -112,7 +112,7 @@ function App() {
         <body class='bg-dark text-light'>
           
           <div class='container'>
-            <div class='row'>
+            <div class='row py-3'>
               <div class='col'>
    
               </div>
